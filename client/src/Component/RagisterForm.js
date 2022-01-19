@@ -32,7 +32,10 @@ const RegForm = () => {
             name: "",
             phone: "",
             profession: "",
-            salary: "",
+            salary1: "",
+            salary2: "",
+            salary3:"",
+            totalsalary: "",
             email: "",
             password: "",
             confirmpassword: "",
@@ -41,13 +44,11 @@ const RegForm = () => {
         onSubmit: (values) => {
             if (id) {
                 Apidispatch(update_User(id, values))
-                // console.log(" update value");
                 history.push('/dashbord')
 
                 // for add new User
             } else {
                 Apidispatch(register_user(values))
-                // console.log(register_user(values));
                 history.push('/loginpage')
                 formik.handleReset()
             }            
@@ -97,10 +98,31 @@ const RegForm = () => {
                     /><br />
                     
                     <input type="number"
-                        name='salary'
+                        name='salary1'
                         placeholder='Enter salary'
                         onChange={formik.handleChange}
-                        value={formik.values.salary}
+                        value={formik.values.salary1}
+                    /><br />
+
+                    <input type="number"
+                        name='salary2'
+                        placeholder='Enter salary'
+                        onChange={formik.handleChange}
+                        value={formik.values.salary2}
+                    /><br />
+
+                    <input type="number"
+                        name='salary3'
+                        placeholder='Enter salary'
+                        onChange={formik.handleChange}
+                        value={formik.values.salary3}
+                    /><br />
+
+                    <input type="number"
+                        name='totalsalary'
+                        placeholder='Enter salary'
+                        onChange={formik.handleChange}
+                        value={formik.values.totalsalary}
                     /><br />
                     
                     <input type="text"
@@ -132,8 +154,7 @@ const RegForm = () => {
                     <button onClick={formik.handleReset} className='cancel' type='reset'>Cancel</button>
                 </form><br/>
                 <div className=''>
-                    <p>already registered <NavLink to='/loginpage'>Login</NavLink></p>
-                    
+                    <p>already registered <NavLink to='/loginpage'>Login</NavLink></p>                    
                 </div>
             </div>
         </>

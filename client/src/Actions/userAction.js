@@ -8,14 +8,13 @@ export const register_user = (values) => dispatch => {
             .then(() => {
                     dispatch({ type: "REGISTER_USER", payload: values })
                     alert("Registration Successful");                    
-                    console.log("register done", values);
+                    //console.log("register done", values);
                     })
                     .catch(error => {
                         alert("Invalid Registration")
                         console.log('error', error);
                     })        
     )
-
 }
 
 //For Login User
@@ -33,7 +32,7 @@ export const login_User = (values) => dispatch => {
     )
 }
 
-//For Get user
+//For Get userData and Pagination
 export const get_User = (page) => dispatch => {
     return (
     axios.get(`/getUser/page=${page}/getData`)
@@ -48,6 +47,7 @@ export const get_User = (page) => dispatch => {
     )
 }
 
+//For Ascending Order
 export const sorting_asc = (page) => dispatch => {
     return (
         axios.get(`/getUser/page=${page}/asc`)
@@ -62,6 +62,7 @@ export const sorting_asc = (page) => dispatch => {
     )
 }
 
+//For Descending Order
 export const sorting_dsc = (page) => dispatch => {
     return (
         axios.get(`/getUser/page=${page}/dsc`)
@@ -76,20 +77,20 @@ export const sorting_dsc = (page) => dispatch => {
     )
 }
 
-// For Pagination
-// export const pagination = (page) => dispatch => {
-//     console.log("helo");
-//     return (
-//         axios.get(`/getUser/page/${page}`)
-//             .then(res => {
-//                 const userData = res.data;
-//                 dispatch({ type: "PAGINATION", payload: userData})
-//             })
-//             .catch(error => {
-//             console.log("error", error);
-//         })
-//     )
-// }
+//For Search User
+export const search_Field = (page,searchTerm) => dispatch => {
+    return (
+        axios.get(`/getUser/page=${page}/${searchTerm}`)
+        .then(res => {
+            const getUserData = res.data;
+            //console.log("searchDta", getUserData);
+            dispatch({ type: "SEARCH_FIELD" , payload: getUserData })            
+        })
+        .catch(error => {
+            console.log("error", error);            
+        })
+    )
+}
 
 //For Edit User
 export const edit_User = (id) => dispatch => {
@@ -97,7 +98,7 @@ export const edit_User = (id) => dispatch => {
         axios.get(`/editUser/${id}`)
             .then(res => {
                 const editUserData = res.data;
-                // console.log("editData", editUserData);
+                //console.log("editData", editUserData);
                 dispatch({type: "EDIT_USER", payload:editUserData})
             })
             .catch(error => {
@@ -113,7 +114,7 @@ export const update_User = (id, values) => dispatch => {
         axios.put(`/updateUser/${id}`, values)
             .then(res => {
                 const updateUserData = res.data;
-                // console.log(updateUserData);
+                //console.log(updateUserData);
                 dispatch({ type: "UPDATE_USER", payload: updateUserData })
             })
             .catch(error => {

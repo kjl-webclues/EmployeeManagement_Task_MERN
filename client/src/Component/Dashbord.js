@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { get_User, delete_User, sorting_asc, sorting_dsc} from '../Actions/userAction';
+import { get_User, delete_User, sorting_asc, sorting_dsc, search_Field} from '../Actions/userAction';
 import { Pagination } from '@material-ui/lab';
 
-
-
 const Dashbord = () => {
-    
+    //For Dispatch Action
     const Apidispatch = useDispatch();
 
+    //For Maping Data
     const userData = useSelector(state => state.userData);
 
+    //For Navigate Page
     const history = useHistory();
 
     //For Pagination
     const [page, setPage] = useState(1)
 
-    
-    
+    //For Searching
+    const [searchTerm, setSearchTerm] = useState('')
 
-    
-
-    //For get User after Login for particular token
+    // //For get User after Login for particular token
     // useEffect(() => {
     //     Apidispatch(get_User())    
     // }, [])
@@ -39,6 +37,7 @@ const Dashbord = () => {
         Apidispatch(get_User(page))     
     }, [page])
 
+
     return (        
         <> 
             <div className='container'>
@@ -48,22 +47,28 @@ const Dashbord = () => {
                         </div>
                     </div>                    
             </div>
-            <div>                
-                    <button onClick={() => { Apidispatch(sorting_asc(page))}}>Ascending</button>
-                    <button onClick={() => { Apidispatch(sorting_dsc(page))}}>Decsending</button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-
-                <input type="text"  placeholder='Search...' /><button>Search</button>
-            </div>            
+            <div className='searchbar'>
+                <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                <button className='searchbtn' onClick={() => {Apidispatch(search_Field(page,searchTerm))}}>Search</button>
+            </div>
+            <div>                    
+                <button onClick={() => { Apidispatch(sorting_asc(page))}}>Ascending</button>&nbsp;
+                <button onClick={() => { Apidispatch(sorting_dsc(page)) }}>Decsending</button>                               
+            </div> 
+            
             <hr />
-             <div className='col-md-12  mx-auto'>
+
+            <div className='col-md-12  mx-auto'>
                         <table className='table table-hover'>
                                 <thead className='text-black text-center'>
                                     <tr>                                        
                                         <th scope='col'>Name</th>
                                         <th scope='col'>Phone</th>
                                         <th scope='col'>Profession</th>
-                                        <th scope='col'>Salary</th>
+                                        <th scope='col'>Salary1st</th>
+                                        <th scope='col'>Salary2nd</th>
+                                        <th scope='col'>Salary3rd</th>
+                                        <th scope='col'>TotalSalary</th>
                                         <th scope='col'>Email</th>
                                         <th scope='col'>Password</th>
                                         <th scope='col'>Confirmpassword</th>
@@ -77,7 +82,10 @@ const Dashbord = () => {
                                                 <td>{elem.name}</td>
                                                 <td>{elem.phone}</td>
                                                 <td>{elem.profession}</td>
-                                                <td>{elem.salary}</td>
+                                                <td>{elem.salary1}</td>
+                                                <td>{elem.salary2}</td>
+                                                <td>{elem.salary3}</td>
+                                                <td>{elem.salary1 + elem.salary2 + elem.salary3}</td>
                                                 <td>{elem.email}</td>
                                                 <td>{elem.password}</td>
                                                 <td>{elem.confirmpassword}</td>
@@ -87,13 +95,13 @@ const Dashbord = () => {
                                         )
                                     })}
                                 </tbody>
-                </table>
-                <Pagination
-                    count={5}
-                    variant='outlined'
-                    color='secendory'
-                    onChange={(event, value) => setPage(value)}                    
-                />
+                        </table>
+                        <Pagination
+                            count={3}
+                            variant='outlined'
+                            color='secendory'
+                            onChange={(event, value) => setPage(value)}                    
+                        />
             </div>
         </>
     )

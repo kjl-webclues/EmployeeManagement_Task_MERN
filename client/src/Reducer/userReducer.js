@@ -1,6 +1,6 @@
 const initialState = {
     userData: [],
-    userState: true,
+    userState: false,
     userList:[]
 }
 
@@ -12,7 +12,6 @@ const userReducer = (state = initialState, action) => {
             }
         
         case "LOGIN_USER":
-            //console.log(action.payload);
             return {
                 ...state, 
                 userData: [action.payload],
@@ -20,7 +19,6 @@ const userReducer = (state = initialState, action) => {
             }
         
         case "GET_USER":
-            //console.log("getUser",action.payload);
             return {
                 ...state,
                 userData: action.payload,
@@ -51,7 +49,6 @@ const userReducer = (state = initialState, action) => {
                 userState: false
             }
         case "PAGINATION":
-            //console.log(action.payload);
             return {
                 ...state,
                 userData: action.payload
@@ -63,6 +60,11 @@ const userReducer = (state = initialState, action) => {
             }
         
         case "SORT_DSC":
+            return {
+                ...state,
+                userData: action.payload
+            }
+        case "SEARCH_FIELD":
             return {
                 ...state,
                 userData: action.payload

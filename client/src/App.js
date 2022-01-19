@@ -24,7 +24,6 @@ const App = () => {
             <Route exact path='/registerpage' component={RegForm}></Route>        
             <Route exact path='/editUser/:id' component={RegForm}></Route>            
             <ProtectedRoute exact path='/loginpage' component={LoginForm} isAuth={!userState}></ProtectedRoute>
-            {/* <ProtectedRoute path='/getUser/page' component={Dashbord} isAuth={userState}></ProtectedRoute> */}
             <ProtectedRoute exact path='/dashbord' component={Dashbord} isAuth={userState} ></ProtectedRoute>
             <ProtectedRoute exact path='/Logout' component={Logout} isAuth={userState}></ProtectedRoute>
         </Switch>      

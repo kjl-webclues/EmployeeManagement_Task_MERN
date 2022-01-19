@@ -8,4 +8,5 @@ export const DELETE_USER = 'DELETE_USER'
 export const PAGINATION = 'PAGINATION'
 export const SORT_ASC = 'SORT_ASC' 
 export const SORT_DSC = 'SORT_DSC'
+export const SEARCH_FIELD = 'SEARCH_FIELD'
 

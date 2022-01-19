@@ -4,8 +4,6 @@ const User = require('../model/employee')
 // const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const authenticate = require ("../middleware/checkAuth")
-const { aggregate } = require('../model/employee')
-
 
 
 //For Pagination
@@ -37,10 +35,22 @@ router.get('/getUser/page=:pageNumber/:sortByName', async (req, res) => {
                 { $sort: {"name" : sort === "asc" ? 1 : -1}}
             )
         }
+        else if (sort !== "getData") {
+            console.log("salary");
+            aggregateQuery.push(
+                {
+                    $match: {
+                        $or: [
+                            { "name": RegExp(sort) },
+                            {"salary": RegExp(sort)}
+                        ]
+                    }
+                }
+            )
+        }
         aggregateQuery.push(
             { $skip: (page - 1) * limit },
-            { $limit: limit })
-        
+            { $limit: limit })        
         
         const userData = await User.aggregate(aggregateQuery)
         res.send(userData)
@@ -56,7 +66,10 @@ router.post('/signUp', async (req, res) => {
         name: req.body.name,
         profession: req.body.profession,
         phone: req.body.phone,
-        salary: req.body.salary,
+        salary1: req.body.salary1,
+        salary2: req.body.salary2,
+        salary3: req.body.salary3,
+        totalsalary: req.body.totalsalary,
         email: req.body.email,
         password: req.body.password,
         confirmpassword: req.body.confirmpassword,
@@ -120,7 +133,10 @@ router.put('/updateUser/:id', async (req, res) => {
         employee.name = req.body.name
         employee.profession = req.body.profession
         employee.phone = req.body.phone
-        employee.salary = req.body.salary
+        employee.salary1 = req.body.salary1
+        employee.salary2 = req.body.salary2
+        employee.salary3 = req.body.salary3
+        employee.totalsalary = req.body.totalsalary
         employee.email = req.body.email
         employee.password = req.body.password
         employee.confirmpassword = req.body.confirmpassword
