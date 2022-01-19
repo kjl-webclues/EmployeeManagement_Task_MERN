@@ -11,7 +11,6 @@ import { register_user, edit_User, update_User, } from '../Actions/userAction';
 const RegForm = () => {
     //Get Edited User Id
     const { id } = queryString.parse(window.location.search);
-    // console.log("id", id);
 
     //For Navigate Page
     const history = useHistory();
@@ -24,8 +23,6 @@ const RegForm = () => {
 
     //Get responce of the Api Requeste
     const userList = useSelector(state => state.userList)
-
-    // console.log("userList", userList);
 
     const formik = useFormik({
         initialValues: {

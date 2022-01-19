@@ -20,10 +20,6 @@ const Dashbord = () => {
     //For Searching
     const [searchTerm, setSearchTerm] = useState('')
 
-    // //For get User after Login for particular token
-    // useEffect(() => {
-    //     Apidispatch(get_User())    
-    // }, [])
     
     //For Delete User
     const deleteUser = (id) => {        

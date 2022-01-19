@@ -5,22 +5,6 @@ const User = require('../model/employee')
 const jwt = require('jsonwebtoken')
 const authenticate = require ("../middleware/checkAuth")
 
-
-//For Pagination
-// router.get('/getUser/page/:pageNumber', async (req, res) => {
-//     try {
-//         const page = req.params.pageNumber
-//         const limit = 10
-//         const userData = await User.aggregate([
-//             {$skip: (page - 1) * limit }
-//         ])
-//         res.send(userData)
-//     } catch (err) {
-//         res.send('Error' + err)
-//     }
-// })
-
-
 //For Get User And Pagination
 router.get('/getUser/page=:pageNumber/:sortByName', async (req, res) => {
     try {
