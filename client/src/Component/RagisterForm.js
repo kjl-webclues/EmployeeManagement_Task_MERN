@@ -16,7 +16,7 @@ const RegForm = () => {
     const history = useHistory();
 
     //For store the Edited User Data
-    const [employee, setEmployee] = useState([])
+    const [setEmployee] = useState([])
 
     //Dispatch the Api Request
     const Apidispatch = useDispatch();
@@ -66,7 +66,7 @@ const RegForm = () => {
         if (id && userList) {
             formik.setValues(userList)
         }
-    }, [userList])
+    }, [userList,useEffect])
 
     return (
         <>
@@ -77,70 +77,63 @@ const RegForm = () => {
                         name="name"
                         placeholder='Enter Employee Name'
                         onChange={formik.handleChange}
-                        value={formik.values.name}
+                        value={formik.values.name} required
                     /><br />
                     
                     <input type="number"
                         name="phone"
                         placeholder='Enter phone'
                         onChange={formik.handleChange}
-                        value={formik.values.phone}
+                        value={formik.values.phone} required
                     /><br />
                     
                     <input type="text"
                         name='profession'
                         placeholder='Enter Profession'
                         onChange={formik.handleChange}
-                        value={formik.values.profession}
+                        value={formik.values.profession} required
                     /><br />
                     
                     <input type="number"
                         name='salary1'
                         placeholder='Enter salary'
                         onChange={formik.handleChange}
-                        value={formik.values.salary1}
+                        value={formik.values.salary1} required
                     /><br />
 
                     <input type="number"
                         name='salary2'
                         placeholder='Enter salary'
                         onChange={formik.handleChange}
-                        value={formik.values.salary2}
+                        value={formik.values.salary2} required
                     /><br />
 
                     <input type="number"
                         name='salary3'
                         placeholder='Enter salary'
                         onChange={formik.handleChange}
-                        value={formik.values.salary3}
-                    /><br />
-
-                    <input type="number"
-                        name='totalsalary'
-                        placeholder='Enter salary'
-                        onChange={formik.handleChange}
-                        value={formik.values.totalsalary}
+                        value={formik.values.salary3} required
                     /><br />
                     
                     <input type="text"
                         name='email'
                         placeholder='Enter Email'
                         onChange={formik.handleChange}
-                        value={formik.values.email}
+                        value={formik.values.email} required
                     /><br />
                     
                     <input type="password"
                         name='password'
                         placeholder='Enter password'
                         onChange={formik.handleChange}
-                        value={formik.values.password}
+                        value={formik.values.password} required
                     /><br />
                     
                     <input type="password"
                         name='confirmpassword'
                         placeholder='Enter confirm password'
                         onChange={formik.handleChange}
-                        value={formik.values.confirmpassword}
+                        value={formik.values.confirmpassword} required
                     /><br />
 
                      {!id ? (

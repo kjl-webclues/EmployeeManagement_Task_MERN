@@ -35,7 +35,7 @@ export const login_User = (values) => dispatch => {
 //For Get userData and Pagination
 export const get_User = (page) => dispatch => {
     return (
-    axios.get(`/getUser/page=${page}/getData`)
+    axios.get(`/getUser/${page}/getData`)
         .then(res => {
             const getUserData = res.data;
             //console.log("getUserData", getUserData);
@@ -47,10 +47,11 @@ export const get_User = (page) => dispatch => {
     )
 }
 
+
 //For Ascending Order
 export const sorting_asc = (page) => dispatch => {
     return (
-        axios.get(`/getUser/page=${page}/asc`)
+        axios.get(`/getUser/${page}/asc`)
         .then(res => {
             const getUserData = res.data;
             //console.log("getUserData", getUserData);
@@ -65,7 +66,7 @@ export const sorting_asc = (page) => dispatch => {
 //For Descending Order
 export const sorting_dsc = (page) => dispatch => {
     return (
-        axios.get(`/getUser/page=${page}/dsc`)
+        axios.get(`/getUser/${page}/dsc`)
         .then(res => {
             const getUserData = res.data;
             //console.log("getUserData", getUserData);
@@ -78,12 +79,11 @@ export const sorting_dsc = (page) => dispatch => {
 }
 
 //For Search User
-export const search_Field = (page,searchTerm) => dispatch => {
+export const search_Field = (page,search) => dispatch => {
     return (
-        axios.get(`/getUser/page=${page}/${searchTerm}`)
+        axios.get(`/getUser/${page}/${search}`)
         .then(res => {
             const getUserData = res.data;
-            //console.log("searchDta", getUserData);
             dispatch({ type: "SEARCH_FIELD" , payload: getUserData })            
         })
         .catch(error => {

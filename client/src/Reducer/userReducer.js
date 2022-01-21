@@ -1,7 +1,7 @@
 const initialState = {
     userData: [],
-    userState: false,
-    userList:[]
+    userState: true,
+    userList: []
 }
 
 const userReducer = (state = initialState, action) => {
@@ -14,7 +14,7 @@ const userReducer = (state = initialState, action) => {
         case "LOGIN_USER":
             return {
                 ...state, 
-                userData: [action.payload],
+                userData: action.payload,
                 userState: true
             }
         

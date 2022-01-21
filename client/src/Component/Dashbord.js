@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_User, delete_User, sorting_asc, sorting_dsc, search_Field} from '../Actions/userAction';
 import { Pagination } from '@material-ui/lab';
+import  debounce  from 'lodash.debounce';
 
 const Dashbord = () => {
-    //For Dispatch Action
-    const Apidispatch = useDispatch();
+    //For Dispatch Action Api 
+    const dispatch = useDispatch();
 
     //For Maping Data
     const userData = useSelector(state => state.userData);
@@ -15,41 +16,50 @@ const Dashbord = () => {
     const history = useHistory();
 
     //For Pagination
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(1);
+
 
     //For Searching
-    const [searchTerm, setSearchTerm] = useState('')
+    const [searchTerm, setSearchTerm] = useState('');
 
-    
-    //For Delete User
+    //For Delete User Api
     const deleteUser = (id) => {        
-        Apidispatch(delete_User(id))
+        dispatch(delete_User(id))
         window.location.reload();
         history.push('/registerpage')
     }
 
-    // For Pagination
+    // For Pagination Api
     useEffect(() => {
-        Apidispatch(get_User(page))     
-    }, [page])
+        dispatch(get_User(page))     
+    }, [page, dispatch])
 
+    
+    
+    
+    //For Searching
+
+    const handleSearch = debounce((value) => {
+        console.log(value);
+        dispatch(search_Field(page, searchTerm))
+        setSearchTerm(value)
+    }, 500)   
 
     return (        
         <> 
             <div className='container'>
                     <div className='row'>
-                        <div className='col-md-12 my-5 text-center'>
+                        <div className='col-md-12 my-1 text-center'>
                             <h1> Welcome to Dashbord</h1>            
                         </div>
                     </div>                    
             </div>
             <div className='searchbar'>
-                <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                <button className='searchbtn' onClick={() => {Apidispatch(search_Field(page,searchTerm))}}>Search</button>
+                <input type="text"  onChange={(e) => handleSearch(e.target.value)} />
             </div>
             <div>                    
-                <button onClick={() => { Apidispatch(sorting_asc(page))}}>Ascending</button>&nbsp;
-                <button onClick={() => { Apidispatch(sorting_dsc(page)) }}>Decsending</button>                               
+                <button onClick={() => { dispatch(sorting_asc(page))}}>Ascending</button>&nbsp;
+                <button onClick={() => { dispatch(sorting_dsc(page)) }}>Decsending</button>
             </div> 
             
             <hr />
@@ -93,10 +103,10 @@ const Dashbord = () => {
                                 </tbody>
                         </table>
                         <Pagination
-                            count={3}
-                            variant='outlined'
-                            color='secendory'
-                            onChange={(event, value) => setPage(value)}                    
+                        count={3}
+                        variant='outlined'
+                        color='secendory'
+                        onChange={(event, value) => { setPage(value) }}
                         />
             </div>
         </>

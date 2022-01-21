@@ -1,32 +1,34 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../model/employee')
-// const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const authenticate = require ("../middleware/checkAuth")
 
-//For Get User And Pagination
-router.get('/getUser/page=:pageNumber/:sortByName', async (req, res) => {
+//For Get User And Pagination/Searchin/Sorting
+router.get('/getUser/:pageNumber/:Request', async (req, res) => {
     try {
         const page = req.params.pageNumber
-        const limit = 10
-        const sort = req.params.sortByName
+        const limit = 10        
+        const Request = req.params.Request
         const aggregateQuery = []
 
             
-        if (sort === "asc" || sort === "dsc") {
+        if (Request === "asc" || Request === "dsc") {
             aggregateQuery.push(
-                { $sort: {"name" : sort === "asc" ? 1 : -1}}
+                { $sort: {"name" : Request === "asc" ? 1 : -1}}
             )
         }
-        else if (sort !== "getData") {
-            console.log("salary");
+        else if (Request !== "getData") {
+            const search = Request
             aggregateQuery.push(
                 {
                     $match: {
                         $or: [
-                            { "name": RegExp(sort) },
-                            {"salary": RegExp(sort)}
+                            { "name": RegExp(search) },
+                            { "salary1": parseInt(search) },
+                            { "salary2": parseInt(search) },
+                            { "salary3": parseInt(search) }                            
                         ]
                     }
                 }
@@ -45,7 +47,6 @@ router.get('/getUser/page=:pageNumber/:sortByName', async (req, res) => {
 
 // //For Register User
 router.post('/signUp', async (req, res) => {
-    // console.log('post method call');
     const user = new User({
         name: req.body.name,
         profession: req.body.profession,
@@ -53,7 +54,6 @@ router.post('/signUp', async (req, res) => {
         salary1: req.body.salary1,
         salary2: req.body.salary2,
         salary3: req.body.salary3,
-        totalsalary: req.body.totalsalary,
         email: req.body.email,
         password: req.body.password,
         confirmpassword: req.body.confirmpassword,
@@ -70,7 +70,6 @@ router.post('/signUp', async (req, res) => {
 
 //For Login User
 router.post('/signIn', async (req, res) => {
-    // console.log("hello");
     try {
         let token;        
         const { email, password } = req.body;
@@ -81,17 +80,16 @@ router.post('/signIn', async (req, res) => {
         const userLogin = await User.findOne({ email: email });
 
         if (userLogin) {
+            //Generate Token
             token = await userLogin.generateAuthToken();
-            console.log(token);
 
-            //store the token in cookie
+            //Store the Token in Cookie
             res.cookie("jwtLogin", token, {
                 expiresIn: new Date(Date.now() + 1 * 3600 * 1000),
                 httpOnly: true
             })
             res.send(userLogin);
         } else {
-            console.log("Invalid Credientials!");
             res.status(400).send({ error: "Invalid Credientials!"});
         }
 
@@ -110,7 +108,7 @@ router.get('/editUser/:id', async (req, res) => {
     }
 })
 
-//put (update) for update
+//For Update Edited User
 router.put('/updateUser/:id', async (req, res) => {
     try {
         const employee = await User.findById(req.params.id)
@@ -120,7 +118,6 @@ router.put('/updateUser/:id', async (req, res) => {
         employee.salary1 = req.body.salary1
         employee.salary2 = req.body.salary2
         employee.salary3 = req.body.salary3
-        employee.totalsalary = req.body.totalsalary
         employee.email = req.body.email
         employee.password = req.body.password
         employee.confirmpassword = req.body.confirmpassword
@@ -136,7 +133,7 @@ router.put('/updateUser/:id', async (req, res) => {
 router.delete('/deleteUser/:id', async (req, res) => {
     try {
     res.clearCookie("jwtLogin")
-    const userData = await User.findByIdAndRemove(req.params.id)
+    const userData = await User.findByIdAndDelete(req.params.id)
     res.json(userData)
     } catch (err) {
         res.send('Error' + err)
@@ -150,10 +147,9 @@ router.get('/dashbord',authenticate,(req, res) => {
 
 //For Logout User
 router.get('/logout', authenticate, async (req, res) => {
-    console.log("hello");
     try {
+
         //Remove token from database
-        
         req.authenticateUser.Token = req.authenticateUser.Token.filter((elem) => {
             return elem.token !== req.token
         })
@@ -169,4 +165,5 @@ router.get('/logout', authenticate, async (req, res) => {
         res.status(500).send(err);
     }
 })
+
 module.exports = router    
