@@ -1,6 +1,6 @@
 const initialState = {
     userData: [],
-    userState: true,
+    userState: false,
     userList: []
 }
 
@@ -47,27 +47,6 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userState: false
-            }
-        case "PAGINATION":
-            return {
-                ...state,
-                userData: action.payload
-            }
-        case "SORT_ASC":
-            return {
-                ...state,
-                userData: action.payload
-            }
-        
-        case "SORT_DSC":
-            return {
-                ...state,
-                userData: action.payload
-            }
-        case "SEARCH_FIELD":
-            return {
-                ...state,
-                userData: action.payload
             }
         default:
             return state

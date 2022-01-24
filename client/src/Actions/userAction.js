@@ -32,59 +32,14 @@ export const login_User = (values) => dispatch => {
     )
 }
 
-//For Get userData and Pagination
-export const get_User = (page) => dispatch => {
+//For Get userData and Pagination and Sorting
+export const get_User = (page,Request) => dispatch => {
     return (
-    axios.get(`/getUser/${page}/getData`)
+    axios.get(`/getUser/${page}/${Request}`)
         .then(res => {
             const getUserData = res.data;
-            //console.log("getUserData", getUserData);
+            console.log("getUserData", getUserData);
             dispatch({ type: "GET_USER" , payload: getUserData })            
-        })
-        .catch(error => {
-            console.log("error", error);            
-        })
-    )
-}
-
-
-//For Ascending Order
-export const sorting_asc = (page) => dispatch => {
-    return (
-        axios.get(`/getUser/${page}/asc`)
-        .then(res => {
-            const getUserData = res.data;
-            //console.log("getUserData", getUserData);
-            dispatch({ type: "SORT_ASC" , payload: getUserData })            
-        })
-        .catch(error => {
-            console.log("error", error);            
-        })
-    )
-}
-
-//For Descending Order
-export const sorting_dsc = (page) => dispatch => {
-    return (
-        axios.get(`/getUser/${page}/dsc`)
-        .then(res => {
-            const getUserData = res.data;
-            //console.log("getUserData", getUserData);
-            dispatch({ type: "SORT_DSC" , payload: getUserData })            
-        })
-        .catch(error => {
-            console.log("error", error);            
-        })
-    )
-}
-
-//For Search User
-export const search_Field = (page,search) => dispatch => {
-    return (
-        axios.get(`/getUser/${page}/${search}`)
-        .then(res => {
-            const getUserData = res.data;
-            dispatch({ type: "SEARCH_FIELD" , payload: getUserData })            
         })
         .catch(error => {
             console.log("error", error);            

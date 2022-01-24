@@ -1,11 +1,18 @@
 import React, {useEffect, useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { get_User, delete_User, sorting_asc, sorting_dsc, search_Field} from '../Actions/userAction';
+import { get_User, delete_User} from '../Actions/userAction';
 import { Pagination } from '@material-ui/lab';
 import  debounce  from 'lodash.debounce';
 
 const Dashbord = () => {
+
+    //For Searching
+    const [request, setRequest] = useState('asc');
+
+    //For Pagination
+    const [page, setPage] = useState(1);
+
     //For Dispatch Action Api 
     const dispatch = useDispatch();
 
@@ -15,13 +22,6 @@ const Dashbord = () => {
     //For Navigate Page
     const history = useHistory();
 
-    //For Pagination
-    const [page, setPage] = useState(1);
-
-
-    //For Searching
-    const [searchTerm, setSearchTerm] = useState('');
-
     //For Delete User Api
     const deleteUser = (id) => {        
         dispatch(delete_User(id))
@@ -29,20 +29,14 @@ const Dashbord = () => {
         history.push('/registerpage')
     }
 
-    // For Pagination Api
+    //For Get Request
     useEffect(() => {
-        dispatch(get_User(page))     
-    }, [page, dispatch])
-
-    
-    
+        dispatch(get_User(page,request))    
+    }, [page, request, dispatch])
     
     //For Searching
-
     const handleSearch = debounce((value) => {
-        console.log(value);
-        dispatch(search_Field(page, searchTerm))
-        setSearchTerm(value)
+        setRequest(value)
     }, 500)   
 
     return (        
@@ -58,8 +52,8 @@ const Dashbord = () => {
                 <input type="text"  onChange={(e) => handleSearch(e.target.value)} />
             </div>
             <div>                    
-                <button onClick={() => { dispatch(sorting_asc(page))}}>Ascending</button>&nbsp;
-                <button onClick={() => { dispatch(sorting_dsc(page)) }}>Decsending</button>
+                <button onClick={() => setRequest("asc")}>Ascending</button>&nbsp;
+                <button onClick={() => setRequest("dsc")}>Decsending</button>
             </div> 
             
             <hr />

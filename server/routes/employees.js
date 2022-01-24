@@ -13,19 +13,24 @@ router.get('/getUser/:pageNumber/:Request', async (req, res) => {
         const Request = req.params.Request
         const aggregateQuery = []
 
+        if (page) {
+            aggregateQuery.push(
+            { $skip: (page - 1) * limit },
+            { $limit: limit })
+        }
             
         if (Request === "asc" || Request === "dsc") {
             aggregateQuery.push(
                 { $sort: {"name" : Request === "asc" ? 1 : -1}}
             )
         }
-        else if (Request !== "getData") {
+        else {
             const search = Request
             aggregateQuery.push(
                 {
                     $match: {
                         $or: [
-                            { "name": RegExp(search) },
+                            {"name": RegExp("^" +search, "i")},
                             { "salary1": parseInt(search) },
                             { "salary2": parseInt(search) },
                             { "salary3": parseInt(search) }                            
@@ -33,11 +38,7 @@ router.get('/getUser/:pageNumber/:Request', async (req, res) => {
                     }
                 }
             )
-        }
-        aggregateQuery.push(
-            { $skip: (page - 1) * limit },
-            { $limit: limit })        
-        
+        }        
         const userData = await User.aggregate(aggregateQuery)
         res.send(userData)
     } catch (err) {

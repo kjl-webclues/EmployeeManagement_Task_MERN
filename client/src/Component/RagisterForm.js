@@ -19,7 +19,7 @@ const RegForm = () => {
     const [setEmployee] = useState([])
 
     //Dispatch the Api Request
-    const Apidispatch = useDispatch();
+    const dispatch = useDispatch();
 
     //Get responce of the Api Requeste
     const userList = useSelector(state => state.userList)
@@ -40,12 +40,12 @@ const RegForm = () => {
 
         onSubmit: (values) => {
             if (id) {
-                Apidispatch(update_User(id, values))
+                dispatch(update_User(id, values))
                 history.push('/dashbord')
 
                 // for add new User
             } else {
-                Apidispatch(register_user(values))
+                dispatch(register_user(values))
                 history.push('/loginpage')
                 formik.handleReset()
             }            
@@ -55,7 +55,7 @@ const RegForm = () => {
     // get selectedEdit object
     useEffect(() => {
         if (id) {
-            Apidispatch(edit_User(id))
+            dispatch(edit_User(id))
             setEmployee(userList)
         }
     }, [])
